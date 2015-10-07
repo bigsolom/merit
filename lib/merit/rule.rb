@@ -7,19 +7,19 @@ module Merit
                   :multiple, :temporary, :score, :block, :category
 
     # Does this rule's condition block apply?
-    def applies?(target_obj = nil)
+    def applies?(*args)
       return true if block.nil? # no block given: always true
-
+      # target_obj , user_id = *args
       case block.arity
-      when 1 # Expects target object
-        if target_obj.present?
-          block.call(target_obj)
-        else
-          Rails.logger.warn '[merit] no target_obj found on Rule#applies?'
-          false
-        end
       when 0
         block.call
+      else
+        unless args.empty?
+          block.call(*args)
+        else
+          Rails.logger.warn '[merit] no args found on Rule#applies?'
+          false
+        end
       end
     end
 

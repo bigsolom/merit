@@ -67,7 +67,7 @@ module Merit
     end
 
     def rule_applies?
-      @rule.applies? rule_object
+      @rule.applies? rule_object, @action.user_id
     end
 
     def points
